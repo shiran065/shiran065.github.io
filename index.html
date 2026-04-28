@@ -93,11 +93,36 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        
+        <p>SQL通用语法<br>1.SQL语句以分号结尾。<br>2.可以使用空格&#x2F;缩进。<br>2.MYSQL语句不分大小写，关键字用大写。</p>
+<p>DDL(数据定义语言,用来定义数据库对象)<br>1.数据库操作<br>查询所有数据库show databases;<br>查询当前数据库select databases();<br>创建数据库create databases [if not exists] 数据库名 [default charset 字符集] [collate 排序规则];<br>删除数据库drop database [if exists] 数据库名;<br>use 数据库名;</p>
+<p>2.表结构操作<br>展示所有表show tables;<br>展示表结构desc 表名；<br>展示创建的表格show create table 表名；<br>创建表格create table 表名（<br>    字段 字段类型[comment 字段注释]，<br>    ……<br>）[comment 表注释];<br>添加\修改字段alter table 表名 add&#x2F;modify 字段名 类型 [comment注释信息];<br>改字段名alter table 表名 旧字段名 新字段名 类型;<br>删字段alter table 表名 drop 字段名;<br>修改表alter table 表名 rename to 新表名;<br>删除表drop table [if exists]表名;<br>删除重建表truncate table 表名;<br>数值类型tinyint smallint mediumint int或integer bigint float double decimal<br>字符串类型char verchar tinyblob tingtext blob text mediumblob longblob longtext</p>
+<p>DML(数据操作语言，用来对数据库的数据进行增删改)<br>给指定字段添加数据insert into 表名 (字段1,字段, …) values (值1，值2…);<br>给全部字段添加数据insert into 表名 values (值1，值2…);<br>修改数据update 表名 set 字段名1&#x3D;值1，…[where 条件];<br>删除数据delete from 表名 [where 条件]</p>
+<p>DQL(数据查询语言，用来查询数据库中的表的记录)<br>基础语法<br>select 字段列表 from 表名列表 where 条件列表 group by 分组字段列表 having 分组后条件列表 order by 排序字段列表 limit 分页参数;<br>语法说明<br>select 字段列表<br>from 表名列表<br>where 条件列表<br>group by 分组字段列表<br>having 分组后条件列表<br>order by 排序字段列表<br>limit 分页参数;</p>
+<p>DCL(数据控制语言，用来创建数据库用户、控制数据库的访问权限)</p>
+<ol>
+<li><p>管理用户<br>查询用户：<br>use mysql;<br>select * from user;<br>创建用户：create user ‘用户名‘@’主机名’ identified by ‘密码’;<br>修改用户密码：alter user ‘用户名‘@’主机名’ identified with mysql_native_password by ‘新密码’;<br>删除用户：drop user ‘用户名‘@’主机名’;</p>
+</li>
+<li><p>权限控制<br>查询权限：show grants for ‘用户名‘@’主机名’;<br>授予权限：grant 权限列表 on 数据库名.表名 to ‘用户名‘@’主机名’;<br>撤销权限：revoke 权限列表 on 数据库名.表名 from ‘用户名‘@’主机名’;</p>
+</li>
+</ol>
+<p>函数<br>1.字符串函数	<br>concat(s1,s2,…sn)	拼接多个字符串为一个整体	select concat(‘hello’, ‘ ‘, ‘mysql’);	hello mysql<br>lower(str)	  将字符串全部转为小写	select lower(‘HELLO MySQL’);		hello mysql<br>upper(str)	将字符串全部转为大写	select upper(‘hello mysql’);	HELLO MYSQL<br>lpad(str,n,pad)	  左填充：用 pad 把 str 补到 n 个字符长度	select lpad(‘123’, 5, ‘0’);	00123<br>rpad(str,n,pad)	  右填充：用 pad 把 str 补到 n 个字符长度	select rpad(‘123’, 5, ‘<em>‘);	123</em>*<br>trim(str)	去除字符串首尾的空格（中间空格保留）	select trim(‘ hello mysql ‘);	hello mysql<br>substring(str,start,len)	从 start 位置开始，截取 len 个字符（SQL 字符串从 1 开始计数）	select substring(‘hello mysql’, 7, 5);	mysql</p>
+<p>2.数值函数<br>ceil(x)	向上取整（只要有小数就进 1） 	select ceil(1.2); &#x2F;select ceil(-1.2);	2 &#x2F; -1<br>floor(x)	向下取整（直接舍弃小数部分）	select floor(1.9);&#x2F; select floor(-1.9);	1 &#x2F; -2<br>mod(x,y)	取模（求 x 除以 y 的余数）	 select mod(10, 3); &#x2F;select mod(-10, 3);	1 &#x2F; -1<br>rand()	生成 0~1 之间的随机浮点数	 select rand();	（每次运行结果不同，如 0.789）<br>round(x,y)	四舍五入，保留 y 位小数  	select round(3.14159, 2);&#x2F; select round(3.5);	3.14 &#x2F; 4</p>
+<p>3.日期函数<br>curdate()	返回当前日期（格式：yyyy-mm-dd）	select curdate();	（如 2026-04-21）<br>curtime()	返回当前时间（格式：hh:mm:ss）	select curtime();	（如 15:30:00）<br>now()	返回当前日期 + 时间	select now();	（如 2026-04-21 15:30:00）<br>year(date)	获取日期的年份	select year(‘2026-04-21’);	2026<br>month(date)	获取日期的月份	select month(‘2026-04-21’);	4<br>day(date)	获取日期的天数	select day(‘2026-04-21’);	21<br>date_add(date, interval expr type) 	给日期加上指定时间间隔（type 支持 day&#x2F;month&#x2F;year&#x2F;hour 等）	select date_add(‘2026-04-21’, interval 3 month);	2026-07-21<br>datediff(date1, date2)	计算两个日期的天数差（date1 - date2）	select datediff(‘2026-05-01’, ‘2026-04-21’);</p>
+<p>4.流程函数<br>if(value, t, f)	条件判断：value 为真返回 t，否则返回 f	select if(10 &gt; 5, ‘是’, ‘否’);	是<br>ifnull(value1, value2)	空值处理：value1 不为空返回 value1，否则返回 value2	select ifnull(null, ‘默认值’); 	默认值<br>case when	多条件分支（两种用法：等值判断 &#x2F; 范围判断）	select case when score &gt;&#x3D; 90 then ‘优秀’ when score &gt;&#x3D; 60 then ‘及格’ else ‘不及格’ end from student;</p>
+<p>约束<br>1.非空约束 not null<br>2.唯一约束 unique<br>3.主键约束 primary key(一张表只能有一个主键)	auto_increment 自动增长<br>4.默认约束 default<br>5.检查约束 check<br>6.外键约束 foreing key<br>创建表时添加外键：<br>create table 表名(<br>    字段名 数据类型,<br>    …<br>    [constraint] [外键名称] foreign key (外键字段名) references 主表 (主表列名)<br>);</p>
+<p>创建表后添加外键: alter table 表名 add constraint 外键名称 foreign key (外键字段名) references 主表 (主表列名);</p>
+<p>no action	当在父表中删除 &#x2F; 更新对应记录时，首先检查该记录是否有对应外键，如果有则不允许删除 &#x2F; 更新。（与 restrict 一致）<br>restrict	当在父表中删除 &#x2F; 更新对应记录时，首先检查该记录是否有对应外键，如果有则不允许删除 &#x2F; 更新。（与 no action 一致）<br>cascade	当在父表中删除 &#x2F; 更新对应记录时，首先检查该记录是否有对应外键，如果有，则也删除 &#x2F; 更新外键在子表中的记录。<br>set null	当在父表中删除对应记录时，首先检查该记录是否有对应外键，如果有则设置子表中该外键值为 null（这就要求该外键允许取 null）。<br>set default	父表有变更时，子表将外键列设置成一个默认的值（innodb 不支持）<br>示例<br>alter table emp add constraint fk_emp_dept_id foreign key (dept_id) references dept(id) (on update cascade on delete cascade) ;<br>alter table emp add constraint fk_emp_dept_id foreign key (dept_id) references dept(id) (on update set null on delete set null) ;</p>
+<p>多表查询<br>1.内连接(查询的是两表之间的交集)<br>隐式内连接	select 字段列表 from 表1, 表2 where 条件 …;<br>显式内连接	select 字段列表 from 表1 [inner] join 表2 on 连接条件 …;<br>示例<br>select emp.name , dept.name from emp , dept where emp.dept_id &#x3D; dept.id ;<br>select e.name,d.name from emp e , dept d where e.dept_id &#x3D; d.id;（取别名）</p>
+<p>2.外连接<br>左外连接&#x2F;右外连接(一边表的所有数据和两表之间的交集)<br>select 字段列表 from 表1 left&#x2F;right [outer] join 表2 on 条件…;</p>
+<p>3.自连接<br>select 字段列表 from 表A 别名A join 表A 别名B on 条件…;<br>示例<br>select a.name b.name from emp a , emp b where a.managerid &#x3D; b.id;</p>
+<p>4.联合查询<br>select 字段列表 from 表1<br>union [all]<br>select 字段列表 from 表2;</p>
+<p>5.子查询<br>select * from t1 where column1 &#x3D; (select column1 from t2);</p>
+<p>事务<br>设置事务提交方式:select @@autocommit;   查看当前 MySQL 是否开启自动提交模式（1 表示开启，0 表示关闭）。<br>                   set @@autocommit &#x3D; 0;   关闭自动提交，后续的增删改操作需要手动执行 commit 才会永久生效。<br>                   commit;   提交事务，将事务内的所有修改永久写入数据库。<br>                   rollback;   回滚事务，撤销事务内所有未提交的修改。<br>开启事务:start transaction 或 begin;<br>提交事务:commit;<br>回滚事务:rollback;<br>事务四大特性:原子性，一致性，隔离性，持久性</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2026/04/20/SQL/" data-id="cmoct5csb0001lgv1e0wl4kjy" data-title="sql" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2026/04/20/SQL/" data-id="cmoijighf0002v4v1dwb9b75j" data-title="sql" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -136,7 +161,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2026/04/15/PHP/" data-id="cmoct5cs80000lgv11eig5fem" data-title="PHP" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2026/04/15/PHP/" data-id="cmoijighc0000v4v1cev0e63j" data-title="PHP" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -175,7 +200,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2026/04/15/linux/" data-id="cmoct5csc0002lgv159vv0sr5" data-title="linux" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2026/04/15/linux/" data-id="cmoijighe0001v4v13e0edcp5" data-title="linux" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
